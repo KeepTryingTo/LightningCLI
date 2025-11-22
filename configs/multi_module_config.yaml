@@ -1,0 +1,47 @@
+# configs/mutli_module_config.yaml
+seed_everything: 42
+
+model:
+  class_path: models.multi_module_lightningCLI.SimpleAutoEncoder
+  init_args:
+    input_size: 784  # 28x28
+    encoder_hidden_sizes: [512, 256]    # 编码器隐藏层
+    decoder_hidden_sizes: [256, 512]    # 解码器隐藏层（对称）
+    latent_dim: 128                     # 潜在空间维度
+    learning_rate: 0.001
+    batch_size: 128
+
+data:
+  class_path: datas.mutl_module_dataset.MNISTDataModule
+  init_args:
+    data_dir: /home/ff/myProject/KGT/myProjects/myProjects/CrowdCLIP/scripts/LightningCLI/datas/datasets
+    batch_size: 128
+    num_workers: 8
+    image_size: 28
+
+trainer:
+  max_epochs: 10
+  accelerator: auto
+  devices: auto
+  logger: true
+  callbacks:
+    - class_path: pytorch_lightning.callbacks.ModelCheckpoint
+      init_args:
+        monitor: val_loss
+        save_top_k: 2
+        mode: min
+        filename: 'simple_ae-{epoch:02d}-{val_loss:.4f}'
+        save_last: true
+        auto_insert_metric_name: false
+        dirpath: /home/ff/myProject/KGT/myProjects/myProjects/CrowdCLIP/scripts/myLightningCLI/ckpt
+
+    - class_path: pytorch_lightning.callbacks.EarlyStopping
+      init_args:
+        monitor: val_loss
+        patience: 3
+        mode: min
+        verbose: true
+
+    - class_path: pytorch_lightning.callbacks.LearningRateMonitor
+      init_args:
+        logging_interval: epoch

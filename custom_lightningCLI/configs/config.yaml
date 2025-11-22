@@ -1,0 +1,47 @@
+# configs/config.yaml
+seed_everything: 42
+
+notification_email: "researcher@lab.com"
+experiment_name: "mnist_autoencoder_v1"
+
+model:
+  class_path: models.custom_model.Autoencoder
+  init_args:
+    hidden_sizes: [512, 256, 128]
+    batch_size: 32
+    input_size: 28
+    latent_dim: 64
+    learning_rate: 0.001
+    dropout: 0.2
+
+data:
+  class_path: datas.custom_dataset.MNISTDataModule
+  init_args:
+    data_dir: "/home/ff/myProject/KGT/myProjects/myProjects/CrowdCLIP/scripts/myLightningCLI/datas/datasets"
+    batch_size: 16
+    num_workers: 8
+    validation_split: 0.2
+    image_size: 28
+    download: true
+
+trainer:
+  max_epochs: 20
+  accelerator: "auto"
+  devices: "auto"
+  logger: true
+  enable_progress_bar: true
+  callbacks:
+    - class_path: pytorch_lightning.callbacks.ModelCheckpoint
+      init_args:
+        monitor: val_loss
+        save_top_k: 1
+        mode: min
+        filename: '{epoch}-{val_mae:.2f}'
+        dirpath: "/home/ff/myProject/KGT/myProjects/myProjects/CrowdCLIP/scripts/myLightningCLI/custom_lightningCLI/ckpt"
+    - class_path: pytorch_lightning.callbacks.EarlyStopping
+      init_args:
+        monitor: val_loss
+        patience: 5
+    - class_path: pytorch_lightning.callbacks.LearningRateMonitor
+      init_args:
+        logging_interval: epoch

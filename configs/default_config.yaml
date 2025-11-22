@@ -1,0 +1,25 @@
+# default_config.yaml
+seed_everything: 42
+
+model:
+  class_path: models.lightningCLI.MNISTModel  # 根据您的实际模型路径修改
+  init_args:
+    input_size: 784
+    hidden_size: 512
+    num_classes: 10
+    learning_rate: 0.001
+
+data:
+  class_path: datas.dataset.MNISTDataModule  # 根据您的实际数据模块路径修改
+  init_args:
+    data_dir: /home/ff/myProject/KGT/myProjects/myProjects/CrowdCLIP/scripts/myLightningCLI/datas/datasets
+    batch_size: 16
+    num_workers: 8
+
+trainer:
+  max_epochs: 10
+  accelerator: auto
+  devices: auto
+  logger: true
+
+#ckpt_path: /home/ff/myProject/KGT/myProjects/myProjects/CrowdCLIP/scripts/myLightningCLI/ckpt/
