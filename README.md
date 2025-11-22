@@ -7,7 +7,7 @@ LightningCLI讲解
 
 (1)文字教程[CSDN](https://blog.csdn.net/Keep_Trying_Go/article/details/155001802)
 
-(2)视频教程[Bilibili平台]()和
+(2)视频教程[Bilibili平台](https://www.bilibili.com/video/BV13dUHBNEin/?pop_share=1&vd_source=b2eaaddb2c69bf42517a2553af8444ab)和
 [抖音平台]()
 
 ```doctest
